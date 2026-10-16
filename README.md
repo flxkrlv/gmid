@@ -64,13 +64,7 @@ pip install plotly            # only for the interactive dashboard
 
 The generator is run through [`gmid_lut/run_gmid.sh`](gmid_lut/run_gmid.sh),
 which expects a Cadence environment (`~/.bashrc.cadence`) and a bash shell
-(Linux). On Windows/PowerShell you can skip the launcher and call the scripts
-directly, provided `spectre` is on `PATH`:
-
-```powershell
-python gmid_lut\gmid_lut.py --quick
-python gmid_lut\gmid_dash.py lut_gpdk180
-```
+(Linux).
 
 ### Quick start
 
@@ -113,7 +107,7 @@ in the config block (see below) or overridden on the CLI.** CLI wins.
 | `--techname` | `TECHNAME` | Technology name → output directory `lut_<techname>`. Nested paths allowed (`proc/5v` → `lut_proc/5v`). |
 | `--vdd` | `NMOS_VDD`/`PMOS_VDD` | Supply, V. Overrides both NMOS and PMOS values. |
 | `--lengths` | `NMOS_LENGTHS`/`PMOS_LENGTHS` | Channel lengths in **µm** (overrides both). |
-| `--vgs-start` | `NMOS_VGS_START`/`PMOS_VGS_START` | Lower `|VGS|` of the sweep, V (overrides both). |
+| `--vgs-start` | `NMOS_VGS_START`/`PMOS_VGS_START` | Lower `\|VGS\|` of the sweep, V (overrides both). |
 | `--symbols INST PROBE` | auto-detected | Instance name and probe name for subcircuit models, e.g. `X1 X1.m1`. |
 | `--quick` | off | Coarse sweeps (`QUICK_SWEEP`) and thinned length list. |
 | `--op` | off | Run one trial operating-point simulation. |
@@ -189,8 +183,8 @@ The top of `gmid_lut.py` has an editable config block, framed by the comments
 | `CORNERS` | `["NN","SS","FF","SF","FS"]` | Corner sections; `None` for a flat file. |
 | `TECHNAME` | `"gpdk180"` | Output directory `lut_<TECHNAME>`. `None` → `lut_<models-file-stem>`. |
 | `GPDK_LENGTHS` / `NMOS_LENGTHS` / `PMOS_LENGTHS` | `0.18 … 10 µm` | Channel lengths (m). |
-| `NMOS_VDD` / `PMOS_VDD` | `1.8` | Supply (V). Sets the `VGS`/`VDS` range `0..|VDD|` and `VBS` range `0..−|VDD|` (NMOS) / `0..+|VDD|` (PMOS). |
-| `NMOS_VGS_START` / `PMOS_VGS_START` | `0.2` | Lower `|VGS|` (V): starting closer to 0 puts the device deep in cutoff where gm/ID is noisy. |
+| `NMOS_VDD` / `PMOS_VDD` | `1.8` | Supply (V). Sets the `VGS`/`VDS` range `0..\|VDD\|` and `VBS` range `0..−\|VDD\|` (NMOS) / `0..+\|VDD\|` (PMOS). |
+| `NMOS_VGS_START` / `PMOS_VGS_START` | `0.2` | Lower `\|VGS\|` (V): starting closer to 0 puts the device deep in cutoff where gm/ID is noisy. |
 | `SWEEP` | `vgs=0.025, vds=0.10, vbs=0.50` | Sweep steps (V) for a full run. |
 | `QUICK_SWEEP` | `vgs=0.10, vds=0.50, vbs=1.00` | Sweep steps (V) for the `--quick` run. |
 | `QUICK_LENGTH_STRIDE` | `2` | Length-list decimation factor in quick mode. |
@@ -373,13 +367,6 @@ pip install plotly            # только для интерактивного
 
 Генератор запускается через [`gmid_lut/run_gmid.sh`](gmid_lut/run_gmid.sh),
 который ожидает окружение Cadence (`~/.bashrc.cadence`) и bash (Linux).
-В Windows/PowerShell можно обойтись без лаунчера и вызывать скрипты напрямую,
-если `spectre` есть в `PATH`:
-
-```powershell
-python gmid_lut\gmid_lut.py --quick
-python gmid_lut\gmid_dash.py lut_gpdk180
-```
 
 ### Быстрый старт
 
@@ -423,7 +410,7 @@ python gmid_lut.py --models-file gpdk.scs --techname gpdk180 --quick
 | `--techname` | `TECHNAME` | Имя технологии → каталог `lut_<techname>`. Можно вложенное (`proc/5v` → `lut_proc/5v`). |
 | `--vdd` | `NMOS_VDD`/`PMOS_VDD` | Номинал питания, В. Перебивает оба значения. |
 | `--lengths` | `NMOS_LENGTHS`/`PMOS_LENGTHS` | Длины каналов в **мкм** (перебивает оба списка). |
-| `--vgs-start` | `NMOS_VGS_START`/`PMOS_VGS_START` | Нижняя `|VGS|` развёртки, В (перебивает оба). |
+| `--vgs-start` | `NMOS_VGS_START`/`PMOS_VGS_START` | Нижняя `\|VGS\|` развёртки, В (перебивает оба). |
 | `--symbols INST PROBE` | автоопределение | Имена экземпляра и probe (для subckt-моделей), напр. `X1 X1.m1`. |
 | `--quick` | выкл | Грубые развёртки (`QUICK_SWEEP`) и прореживание списка длин. |
 | `--op` | выкл | Пробная operating-point симуляция. |
@@ -499,8 +486,8 @@ pt = solve_point("lut_gpdk180/lut_gpdk180_NN.npz", "nmos1", length=1e-6,
 | `CORNERS` | `["NN","SS","FF","SF","FS"]` | Секции углов; `None` для плоского файла. |
 | `TECHNAME` | `"gpdk180"` | Выходной каталог `lut_<TECHNAME>`. `None` → `lut_<имя-файла>`. |
 | `GPDK_LENGTHS` / `NMOS_LENGTHS` / `PMOS_LENGTHS` | `0.18 … 10 µm` | Длины каналов (м). |
-| `NMOS_VDD` / `PMOS_VDD` | `1.8` | Питание (В). Задаёт диапазоны `VGS`/`VDS` = `0..|VDD|` и `VBS` = `0..−|VDD|` (NMOS) / `0..+|VDD|` (PMOS). |
-| `NMOS_VGS_START` / `PMOS_VGS_START` | `0.2` | Нижняя `|VGS|` (В): слишком близко к 0 — прибор в глубокой отсечке, gm/ID шумит. |
+| `NMOS_VDD` / `PMOS_VDD` | `1.8` | Питание (В). Задаёт диапазоны `VGS`/`VDS` = `0..\|VDD\|` и `VBS` = `0..−\|VDD\|` (NMOS) / `0..+\|VDD\|` (PMOS). |
+| `NMOS_VGS_START` / `PMOS_VGS_START` | `0.2` | Нижняя `\|VGS\|` (В): слишком близко к 0 — прибор в глубокой отсечке, gm/ID шумит. |
 | `SWEEP` | `vgs=0.025, vds=0.10, vbs=0.50` | Шаги развёрток (В) полного прогона. |
 | `QUICK_SWEEP` | `vgs=0.10, vds=0.50, vbs=1.00` | Шаги развёрток (В) для `--quick`. |
 | `QUICK_LENGTH_STRIDE` | `2` | Прореживание списка длин в быстром режиме. |
